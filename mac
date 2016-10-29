@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# Welcome to the thoughtbot laptop script!
-# Be prepared to turn your laptop (or desktop, no haters here)
-# into an awesome development machine.
-
 fancy_echo() {
   local fmt="$1"; shift
 
@@ -93,6 +89,8 @@ if brew list | grep -Fq brew-cask; then
   brew uninstall --force brew-cask
 fi
 
+# brew "rcm"
+
 fancy_echo "Updating Homebrew formulae ..."
 brew update
 brew bundle --file=- <<EOF
@@ -103,7 +101,6 @@ tap "homebrew/services"
 brew "ctags"
 brew "git"
 brew "openssl"
-brew "rcm"
 brew "reattach-to-user-namespace"
 brew "the_silver_searcher"
 brew "tmux"
@@ -112,7 +109,6 @@ brew "zsh"
 
 # Heroku
 brew "heroku-toolbelt"
-brew "parity"
 
 # GitHub
 brew "hub"
@@ -125,12 +121,10 @@ brew "qt"
 
 # Programming languages
 brew "libyaml" # should come after openssl
-brew "node"
 brew "rbenv"
 brew "ruby-build"
 
 # Databases
-brew "postgres", restart_service: true
 brew "redis", restart_service: true
 EOF
 
