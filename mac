@@ -3,7 +3,6 @@
 fancy_echo() {
   local fmt="$1"; shift
 
-  # shellcheck disable=SC2059
   printf "\n$fmt\n" "$@"
 }
 
@@ -26,7 +25,6 @@ append_to_zshrc() {
   fi
 }
 
-# shellcheck disable=SC2154
 trap 'ret=$?; test $ret -ne 0 && printf "failed\n\n" >&2; exit $ret' EXIT
 
 set -e
@@ -39,7 +37,6 @@ if [ ! -f "$HOME/.zshrc" ]; then
   touch "$HOME/.zshrc"
 fi
 
-# shellcheck disable=SC2016
 append_to_zshrc 'export PATH="$HOME/.bin:$PATH"'
 
 HOMEBREW_PREFIX="/usr/local"
@@ -78,7 +75,6 @@ if ! command -v brew >/dev/null; then
 
     append_to_zshrc '# recommended by brew doctor'
 
-    # shellcheck disable=SC2016
     append_to_zshrc 'export PATH="/usr/local/bin:$PATH"' 1
 
     export PATH="/usr/local/bin:$PATH"
@@ -96,36 +92,59 @@ brew update
 brew bundle --file=- <<EOF
 tap "thoughtbot/formulae"
 tap "homebrew/services"
+tap "homebrew/dupes"
 
 # Unix
 brew "ctags"
 brew "git"
+brew "git-extras"
+brew "git-standup"
 brew "openssl"
 brew "reattach-to-user-namespace"
-brew "the_silver_searcher"
+brew "ripgrep"
 brew "tmux"
 brew "vim"
 brew "zsh"
+brew "rsync"
+brew "tree"
 
 # Heroku
-brew "heroku-toolbelt"
+brew "heroku"
+
+# AWS
+brew "awscli"
+brew "s3cmd"
 
 # GitHub
 brew "hub"
 
-# Image manipulation
-brew "imagemagick"
+# Web tools
+brew "haproxy"
+brew "mcrypt"
+brew "memcached"
+brew "httpie"
+brew "phantomjs"
 
-# Testing
-brew "qt"
+# Image & video manipulation
+brew "imagemagick"
+brew "ffmpeg"
+brew "youtube-dl"
+brew "pandoc"
 
 # Programming languages
 brew "libyaml" # should come after openssl
 brew "rbenv"
 brew "ruby-build"
+brew "leiningen"
+brew "graphviz"
+brew "elixir"
+brew "nodenv"
 
 # Databases
 brew "redis", restart_service: true
+brew "elasticsearch", restart_service: true
+brew "mysql"
+brew "neo4j"
 EOF
 
 fancy_echo "Configuring Ruby ..."
@@ -134,7 +153,6 @@ find_latest_ruby() {
 }
 
 ruby_version="$(find_latest_ruby)"
-# shellcheck disable=SC2016
 append_to_zshrc 'eval "$(rbenv init - --no-rehash)"' 1
 eval "$(rbenv init -)"
 
@@ -151,6 +169,5 @@ bundle config --global jobs $((number_of_cores - 1))
 
 if [ -f "$HOME/.laptop.local" ]; then
   fancy_echo "Running your customizations from ~/.laptop.local ..."
-  # shellcheck disable=SC1090
   . "$HOME/.laptop.local"
 fi
