@@ -119,8 +119,6 @@ brew "s3cmd"
 brew "hub"
 
 # Web tools
-brew "haproxy"
-brew "mcrypt"
 brew "memcached"
 brew "httpie"
 brew "phantomjs"
